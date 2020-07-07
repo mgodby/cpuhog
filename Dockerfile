@@ -1,4 +1,4 @@
-FROM ruby:2.5-alpine
+FROM ruby:2.7-alpine
 
 ENV BUILD_PACKAGES curl-dev ruby-dev build-base
 
@@ -11,7 +11,13 @@ COPY src/* ./
 
 RUN bundle install
 
+RUN apk del build-base curl-dev
+
 RUN rm -rf /var/cache/apk/*
+
+RUN adduser -D --uid 777 cpuhog
+
+USER 777
 
 EXPOSE 8080/tcp
 
